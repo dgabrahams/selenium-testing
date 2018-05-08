@@ -72,11 +72,13 @@ console.log('Script args passed in: ' + args);
 
 	try {
 		// driver.get("https://username:password@uat-msc.codereach.co.uk/");//works in chrome
-		driver.get("https://www.msinvestments.co.uk/ ");
+		// driver.get("https://www.msinvestments.co.uk/ ");
+		driver.get("https://www.msinvestments.co.uk/news ");
 
 		// checkAllLinks();
 		// checkHeaderSearch();
-		checkCarousel();
+		// checkCarousel();
+		checkNewsFilter();
 
 	} 
 	catch(error) {
@@ -284,6 +286,11 @@ console.log('Script args passed in: ' + args);
 
 
 	function checkNewsFilter() {
+
+		driver.findElement(By.css('#edit-field-capabilities-tid > option:nth-child(31)')).click();
+		driver.findElement(By.css('#edit-field-news-post-date-value-1-value-month > option:nth-child(8)')).click();
+		driver.findElement(By.css('#edit-field-news-post-date-value-1-value-year > option:nth-child(9)')).click();
+		driver.findElement(By.css('#edit-submit-clone-of-news-year')).click();
 
 	}//end checkNewsFilter
 
