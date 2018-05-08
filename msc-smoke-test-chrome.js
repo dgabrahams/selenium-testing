@@ -346,7 +346,7 @@ console.log('Script args passed in: ' + args);
 		}//end populateHidden
 
 
-		function runTest() {
+		// function runTest() {
 
 			driver.wait(
 			  populateValues(),
@@ -359,104 +359,55 @@ console.log('Script args passed in: ' + args);
 				)
 				.then(function (elements) {
 
-
-
 					console.log('Total Rows -: ' + totalrows);//correct
 					console.log('Hidden Rows -: ' + hiddenRows);//correct
-
-
+					console.log('Rows not hidden: ' + parseInt(totalrows - hiddenRows));
 
 					driver.findElement(By.id('load-more')).click();
 
 
+					driver.wait(
+					  populateValues(),
+					  5000
+					)
+					.then(function (elements) {
+						driver.wait(
+						  populateHidden(),
+						  5000
+						)
+						.then(function (elements) {
+
+							console.log('Total Rows -: ' + totalrows);//correct
+							console.log('Hidden Rows -: ' + hiddenRows);//correct
+							console.log('Rows not hidden: ' + parseInt(totalrows - hiddenRows));
+
+							driver.findElement(By.id('load-more')).click();
+
+							driver.wait(
+							  populateValues(),
+							  5000
+							)
+							.then(function (elements) {
+								driver.wait(
+								  populateHidden(),
+								  5000
+								)
+								.then(function (elements) {
+
+									console.log('Total Rows -: ' + totalrows);//correct
+									console.log('Hidden Rows -: ' + hiddenRows);//correct
+									console.log('Rows not hidden: ' + parseInt(totalrows - hiddenRows));
+
+								});
+							});
+
+						});
+					});
 
 				});
 			});
 
-		}//end runTest
-
-
-
-		// driver.findElements(By.css('#work-block .views-view-grid .hidden'))
-		// 	.then(function (elements) {
-		// 		// console.log('Hidden Rows: ' + elements.length);//correct
-		// 		hiddenRows = elements.length;
-		// });
-
-
-
-		driver.wait(
-		  runTest(),
-		  5000
-		)
-		.then(() => {
-			driver.wait(
-			  runTest(),
-			  5000
-			)
-		});
-
-		// return (function(){});
-
-
-
-
-
-		// driver.wait(
-		//   populateValues(),
-		//   20000
-		// )
-		// .then(function (elements) {
-		// 	driver.wait(
-		// 	  populateHidden(),
-		// 	  20000
-		// 	)
-		// 	.then(function (elements) {
-
-
-
-		// 		console.log('Total Rows -: ' + totalrows);//correct
-		// 		console.log('Hidden Rows -: ' + hiddenRows);//correct
-
-
-
-		// 		driver.findElement(By.id('load-more')).click();
-
-
-
-		// 	});
-		// });
-
-
-
-
-// console.log(totalrows);
-
-
-
-
-	// 	var pendingElements = driver.findElements(By.tagName('a'));
-
-	// 	pendingElements.then(function (elements) {
-
-	// 		console.log('Total links found: ' + elements.length);
-
-	// 		var pendingHtml = elements.map(function (elem) {
-	// 		    // return elem.getAttribute("innerHTML");//returns a mixture of text only (which is the anchor text) and divs because the divs are in the anchor!
-	// 		    return elem.getAttribute("href");
-	// 		    // console.log(elem.getAttribute("href"));
-	// 		});
-
-	// 		// promise.all(pendingHtml).then(function (allHtml) {
-	// 		//     console.log('in promise all');
-	// 		// });
-
-
-
-	// //https://www.linkedin.com/company/morgan-sindall-group-plc?trk=nav_account_sub_nav_company_admin
-
-
-
+		// }//end runTest
 
 
 	}//end checkNewsLoadMoreButton
