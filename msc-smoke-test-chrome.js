@@ -78,7 +78,8 @@ console.log('Script args passed in: ' + args);
 		// checkAllLinks();
 		// checkHeaderSearch();
 		// checkCarousel();
-		checkNewsFilter();
+		// checkNewsFilter();
+		checkNewsFilterKeyword();
 
 	} 
 	catch(error) {
@@ -296,6 +297,14 @@ console.log('Script args passed in: ' + args);
 
 
 	function checkNewsFilterKeyword() {
+
+		//Below can be used for a further test to provide combo-results, so keyword and filter
+		// driver.findElement(By.css('#edit-field-capabilities-tid > option:nth-child(31)')).click();
+		// driver.findElement(By.css('#edit-field-news-post-date-value-1-value-month > option:nth-child(2)')).click();
+		// driver.findElement(By.css('#edit-field-news-post-date-value-1-value-year > option:nth-child(9)')).click();
+		// driver.findElement(By.css('#edit-submit-clone-of-news-year')).click();
+
+		driver.findElement(By.id('edit-combine')).sendKeys('home', Key.RETURN);
 
 	}//end checkNewsFilterKeyword
 
