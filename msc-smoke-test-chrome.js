@@ -79,7 +79,8 @@ console.log('Script args passed in: ' + args);
 		// checkHeaderSearch();
 		// checkCarousel();
 		// checkNewsFilter();
-		checkNewsFilterKeyword();
+		// checkNewsFilterKeyword();
+		checkNewsLoadMoreButton();
 
 	} 
 	catch(error) {
@@ -310,6 +311,153 @@ console.log('Script args passed in: ' + args);
 
 
 	function checkNewsLoadMoreButton() {
+
+//count how many are in this div: class = #work-block .views-view-grid
+//count how many are hidden:  #work-block .views-view-grid .hidden
+//click the load more button - id = load-more
+
+//now cound how many are hidden, it should be 2 less
+//perform test again n times to be sure
+
+		var totalrows = 0;
+		var hiddenRows = 0;
+		var difference = [];
+
+
+		function populateValues() {
+
+			return driver.findElements(By.css('#work-block .views-view-grid .row'))
+				.then(function (elements) {
+					// console.log('Total Rows: ' + elements.length);//correct
+					totalrows = elements.length;
+			});
+
+		}//end populateValues
+
+
+		function populateHidden() {
+
+			return driver.findElements(By.css('#work-block .views-view-grid .hidden'))
+				.then(function (elements) {
+					// console.log('Hidden Rows: ' + elements.length);//correct
+					hiddenRows = elements.length;
+			});
+
+		}//end populateHidden
+
+
+		function runTest() {
+
+			driver.wait(
+			  populateValues(),
+			  5000
+			)
+			.then(function (elements) {
+				driver.wait(
+				  populateHidden(),
+				  5000
+				)
+				.then(function (elements) {
+
+
+
+					console.log('Total Rows -: ' + totalrows);//correct
+					console.log('Hidden Rows -: ' + hiddenRows);//correct
+
+
+
+					driver.findElement(By.id('load-more')).click();
+
+
+
+				});
+			});
+
+		}//end runTest
+
+
+
+		// driver.findElements(By.css('#work-block .views-view-grid .hidden'))
+		// 	.then(function (elements) {
+		// 		// console.log('Hidden Rows: ' + elements.length);//correct
+		// 		hiddenRows = elements.length;
+		// });
+
+
+
+		driver.wait(
+		  runTest(),
+		  5000
+		)
+		.then(() => {
+			driver.wait(
+			  runTest(),
+			  5000
+			)
+		});
+
+		// return (function(){});
+
+
+
+
+
+		// driver.wait(
+		//   populateValues(),
+		//   20000
+		// )
+		// .then(function (elements) {
+		// 	driver.wait(
+		// 	  populateHidden(),
+		// 	  20000
+		// 	)
+		// 	.then(function (elements) {
+
+
+
+		// 		console.log('Total Rows -: ' + totalrows);//correct
+		// 		console.log('Hidden Rows -: ' + hiddenRows);//correct
+
+
+
+		// 		driver.findElement(By.id('load-more')).click();
+
+
+
+		// 	});
+		// });
+
+
+
+
+// console.log(totalrows);
+
+
+
+
+	// 	var pendingElements = driver.findElements(By.tagName('a'));
+
+	// 	pendingElements.then(function (elements) {
+
+	// 		console.log('Total links found: ' + elements.length);
+
+	// 		var pendingHtml = elements.map(function (elem) {
+	// 		    // return elem.getAttribute("innerHTML");//returns a mixture of text only (which is the anchor text) and divs because the divs are in the anchor!
+	// 		    return elem.getAttribute("href");
+	// 		    // console.log(elem.getAttribute("href"));
+	// 		});
+
+	// 		// promise.all(pendingHtml).then(function (allHtml) {
+	// 		//     console.log('in promise all');
+	// 		// });
+
+
+
+	// //https://www.linkedin.com/company/morgan-sindall-group-plc?trk=nav_account_sub_nav_company_admin
+
+
+
+
 
 	}//end checkNewsLoadMoreButton
 
