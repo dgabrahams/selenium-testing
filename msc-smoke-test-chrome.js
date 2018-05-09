@@ -73,14 +73,16 @@ console.log('Script args passed in: ' + args);
 	try {
 		// driver.get("https://username:password@uat-msc.codereach.co.uk/");//works in chrome
 		// driver.get("https://www.msinvestments.co.uk/ ");
-		driver.get("https://www.msinvestments.co.uk/news ");
+		// driver.get("https://www.msinvestments.co.uk/news");
+		driver.get("https://www.msinvestments.co.uk/contact-us");
 
 		// checkAllLinks();
 		// checkHeaderSearch();
 		// checkCarousel();
 		// checkNewsFilter();
 		// checkNewsFilterKeyword();
-		checkNewsLoadMoreButton();
+		// checkNewsLoadMoreButton();
+		checkOfficesFilter();
 
 	} 
 	catch(error) {
@@ -324,7 +326,7 @@ console.log('Script args passed in: ' + args);
 		var difference = [];
 
 
-		function populateValues() {
+		function populateTotalRows() {
 
 			return driver.findElements(By.css('#work-block .views-view-grid .row'))
 				.then(function (elements) {
@@ -332,10 +334,10 @@ console.log('Script args passed in: ' + args);
 					totalrows = elements.length;
 			});
 
-		}//end populateValues
+		}//end populateTotalRows
 
 
-		function populateHidden() {
+		function populateHiddenRows() {
 
 			return driver.findElements(By.css('#work-block .views-view-grid .hidden'))
 				.then(function (elements) {
@@ -343,18 +345,18 @@ console.log('Script args passed in: ' + args);
 					hiddenRows = elements.length;
 			});
 
-		}//end populateHidden
+		}//end populateHiddenRows
 
 
 		// function runTest() {
 
 			driver.wait(
-			  populateValues(),
+			  populateTotalRows(),
 			  5000
 			)
 			.then(function (elements) {
 				driver.wait(
-				  populateHidden(),
+				  populateHiddenRows(),
 				  5000
 				)
 				.then(function (elements) {
@@ -367,12 +369,12 @@ console.log('Script args passed in: ' + args);
 
 
 					driver.wait(
-					  populateValues(),
+					  populateTotalRows(),
 					  5000
 					)
 					.then(function (elements) {
 						driver.wait(
-						  populateHidden(),
+						  populateHiddenRows(),
 						  5000
 						)
 						.then(function (elements) {
@@ -384,12 +386,12 @@ console.log('Script args passed in: ' + args);
 							driver.findElement(By.id('load-more')).click();
 
 							driver.wait(
-							  populateValues(),
+							  populateTotalRows(),
 							  5000
 							)
 							.then(function (elements) {
 								driver.wait(
-								  populateHidden(),
+								  populateHiddenRows(),
 								  5000
 								)
 								.then(function (elements) {
@@ -415,7 +417,159 @@ console.log('Script args passed in: ' + args);
 
 	function checkOfficesFilter() {
 
-	}//end checkOfficesFilter
+
+			var initialItems = 0;
+			var filteredItems = 0;
+
+
+			//look here for a reference:
+			//https://medium.freecodecamp.org/how-to-write-reliable-browser-tests-using-selenium-and-node-js-c3fdafdca2a9#8277
+
+
+			// driver.wait(
+			//   populateInitialItems(),
+			//   5000
+			// );
+
+			// wait(condition, timeout = undefined, message = undefined) {}
+
+			 // To define a custom condition, simply call WebDriver.wait with a function
+			 // that will eventually return a truthy-value (neither null, undefined, false,
+			 // 0, or the empty string):
+
+			 //     driver.wait(function() {
+			 //       return driver.getTitle().then(function(title) {
+			 //         return title === 'webdriver - Google Search';
+			 //       });
+			 //      }, 1000);
+
+			driver.wait(
+			  function() {
+			  	return driver.findElements(By.css('.view-locations article'))
+					.then(function (elements) {
+						console.log('Total Items: ' + elements.length);//correct
+						initialItems = elements.length;
+						driver.findElement(By.css('#edit-field-group-company-tid > option:nth-child(9)')).click();
+						return true;
+					});
+			  },
+			  5000
+			);
+
+
+			// driver.wait(
+			//   function() {
+			//   	return initialItems > 0;
+			//   },
+			//   5000
+			// );
+
+
+
+
+
+			// driver.wait(
+			//   until.elementLocated(By.className('ajax-progress')),
+			//   5000  
+			// )
+
+
+
+			let iframeElem = driver.wait(
+			  until.elementLocated(By.className('ajax-progress')),
+			  5000  
+			);
+
+
+			driver.wait(
+			  until.stalenessOf(iframeElem),
+			  5000
+			)
+			.then(function () {
+
+				return driver.findElements(By.css('.view-locations article'))
+					.then(function (elements) {
+						console.log('Filtered Items: ' + elements.length);//correct
+						filteredItems = elements.length;
+						console.log('Difference is: ' + parseInt(filteredItems - initialItems));
+						return true;
+				});
+
+			})
+
+
+
+
+			// driver.wait(
+			//   populateInitialItems(),
+			//   5000
+			// );
+
+
+			// driver.findElements(By.css('.view-locations article'))
+			// 		.then(function (elements) {
+			// 			console.log('Total Items: ' + elements.length);//correct
+			// 			initialItems = elements.length;
+			// });
+
+			// driver.findElement(By.css('#edit-field-group-company-tid > option:nth-child(9)')).click();
+
+			// driver.wait(
+			//   driver.findElement(By.css('#edit-field-group-company-tid > option:nth-child(9)')).click(),
+			//   5000
+			// );
+
+
+
+			// let iframeElem = driver.wait(
+			//   until.elementLocated(By.className('ajax-progress')),
+			//   5000  
+			// );
+
+			// driver.wait(
+			//   until.stalenessOf(iframeElem),
+			//   5000
+			// );
+			// // .then(function() {
+			// // 	console.log('its done');
+			// // });
+
+			// let result = driver.wait(
+			//   populateFilteredItems(),
+			//   5000
+			// );
+
+			// console.log('Difference is: ' + parseInt(filteredItems - initialItems));
+
+
+
+			// function populateInitialItems() {
+
+			// 	return driver.findElements(By.css('.view-locations article'))
+			// 		.then(function (elements) {
+			// 			console.log('Total Items: ' + elements.length);//correct
+			// 			initialItems = elements.length;
+			// 	});
+
+			// }//end populateInitialItems
+
+
+			// function populateFilteredItems() {
+
+			// 	return driver.findElements(By.css('.view-locations article'))
+			// 		.then(function (elements) {
+			// 			console.log('Filtered Items: ' + elements.length);//correct
+			// 			filteredItems = elements.length;
+			// 	});
+
+			// }//end populateInitialItems
+
+
+
+
+	}
+
+
 
 
 	function checkContactUsForm() {
